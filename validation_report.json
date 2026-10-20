@@ -1,0 +1,28 @@
+{
+  "records": {
+    "Q2&3": 5300,
+    "S1": 4597,
+    "S2": 92,
+    "S3": 7
+  },
+  "complaints": 2177,
+  "closed": 2016,
+  "open_without_end": 161,
+  "Q02": 11.940940531305115,
+  "S01": 5.0486787204450625,
+  "S01_unique_valid": 2876,
+  "S01_conflicts": 4,
+  "S02": 10.003548761074848,
+  "source_duration_comparison": {
+    "AF": {
+      "comparable": 0,
+      "equal_within_one_minute": 0,
+      "mean_source": null
+    },
+    "AG": {
+      "comparable": 2016,
+      "equal_within_one_minute": 936,
+      "mean_source": 3.324455398478836
+    }
+  }
+}
