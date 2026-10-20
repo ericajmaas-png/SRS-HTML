@@ -1,0 +1,2 @@
+PASS: independent Python mapping totals; embedded/upload parity; many articles per contract; same-contract multi-article complaint; ambiguous/partial/unmapped/invalid articles; existing-contract conflict preserved; manual linking without source mutation; contract filter; persistence; JSON export/import and invalid-import preservation.
+{"rows":5636,"status":{"Meerdere contracten mogelijk":212,"Artikelnummer ontbreekt":1629,"Automatisch via artikel":214,"Artikel niet in mapping":101,"Ongeldig artikelnummer":7,"Onvolledige artikelmapping":14},"linked":214}

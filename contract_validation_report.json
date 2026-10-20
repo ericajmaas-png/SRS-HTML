@@ -1,0 +1,16 @@
+{
+  "mapping_rows": 5636,
+  "unique_articles": 5202,
+  "articles_multiple_contracts": 197,
+  "complaints": 2177,
+  "status": {
+    "Meerdere contracten mogelijk": 212,
+    "Artikelnummer ontbreekt": 1629,
+    "Automatisch via artikel": 214,
+    "Artikel niet in mapping": 101,
+    "Ongeldig artikelnummer": 7,
+    "Onvolledige artikelmapping": 14
+  },
+  "linked_complaints": 214,
+  "linked_unique_contracts": 42
+}

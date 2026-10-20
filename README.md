@@ -42,7 +42,7 @@ Leveranciers worden gekoppeld door volledige naam na trimmen, samenvoegen van ov
 cd /workspace/SRS-HTML
 python -m venv /workspace/scratch/srs-venv
 /workspace/scratch/srs-venv/bin/pip install --cache-dir /tmp/srs-pip-cache -r requirements.txt
-/workspace/scratch/srs-venv/bin/python build_dashboard.py 'data/SRS data & KPI berekening (2).xlsx'
+/workspace/scratch/srs-venv/bin/python build_dashboard.py 'data/SRS data & KPI berekening - contractmapping.xlsx'
 /workspace/scratch/srs-venv/bin/python validate_data.py 'data/SRS data & KPI berekening (2).xlsx'
 ```
 
@@ -69,3 +69,36 @@ Koppelingen blijven lokaal in de browser opgeslagen; opslag bij rechtstreeks ope
 Voor namen met dezelfde basis en verschillende achtervoegsels (`Group`, `Groep`, `Holding`, `Holdings`, `Netherlands`, `Nederland`, `BV`, `NV`, `Ltd`, `Limited`, `GmbH`, `Inc`, `LLC`) worden groepsvoorstellen getoond. Controleer de voorgestelde groepen, vink ze aan en kies **Geselecteerde voorstellen toepassen**. De kortste bestaande naam is de voorgestelde hoofdnaam; via de handmatige functie kun je een andere hoofdnaam kiezen. Voorstellen bewijzen geen gezamenlijke bedrijfsidentiteit: juridische entiteiten kunnen verschillend zijn. Bevestiging slaat de koppelingen op voor volgende imports. Nieuwe, niet-herkende namen blijven apart.
 
 `test_aliases.cjs` controleert groepering, behoud van bronnamen, KPI-aggregatie, browseropslag, JSON-import/export, het afwijzen van circulaire koppelingen, automatische schrijfvarianten, groepsvoorstellen, uitschakelen van automatische herkenning en behoud van voorloopnullen.
+
+## Artikel–contractkoppeling
+
+De actuele ingebedde dataset komt uit **data/SRS data & KPI berekening - contractmapping.xlsx**. De eerdere bron blijft apart behouden. De nieuwe bron is ongewijzigd gekopieerd; SHA-256 `42455763b74fa7f77f5ac49f18c88b99b668764cee31735b51536a94a4917ec1`.
+
+Optioneel tabblad **Contact Artikel mapping** (ook **Contract Artikel mapping** wordt herkend): rij 1 bevat `Inkoopcontract`, `Artikel`, `Artikelomschrijving`; gegevens vanaf rij 2. Het bouwscript en lokale Excel-upload lezen deze mapping mee. Q gebruikt artikelgegevens uit kolom **E**, bestaande contracten uit **P**. De waarde `0` in P is geen contract. Voor de huidige bron bevatten alle 2.177 klachten P=0.
+
+Een contract kan onbeperkt meerdere artikelen bevatten. De index is artikel → verzameling contracten; dubbele identieke mappingregels tellen niet dubbel. Artikelcodes worden exact vergeleken, met behoud van voorloopnullen. De klachtenbron bevat achtcijferige artikelcodes; uit E worden volledige achtcijferige tokens gelezen, ook bij meerdere artikelen of een omschrijving. Grote onveilige numerieke waarden worden niet opgedeeld of hersteld, omdat Excel daarin precisie kan hebben verloren.
+
+Automatische toewijzing vereist dat **alle gevonden artikelcodes** voorkomen in de mapping en hun gecombineerde contractverzameling precies één contract bevat. Meerdere artikelen die allemaal onder hetzelfde contract vallen, zijn dus automatisch koppelbaar. Artikelen met meerdere mogelijke contracten, onbekende codes of een gedeeltelijke match worden niet gegokt. Bestaande contracten blijven leidend; een afwijking van de mapping wordt gemeld. Handmatige koppelingen hebben voorrang. Er wordt niet op alleen leveranciersnaam of omschrijving gegokt.
+
+Bij de aangeleverde mapping:
+
+| Controle | Aantal |
+|---|---:|
+| Mappingregels | 5.636 |
+| Unieke artikelen | 5.202 |
+| Artikelen met meerdere contracten | 197 |
+| Automatisch gekoppelde klachten | 214 |
+| Contracten met gekoppelde klachten | 42 |
+| Geen bruikbare achtcijferige artikelcode | 1.629 |
+| Meerdere mogelijke contracten | 212 |
+| Artikel niet in mapping | 101 |
+| Gedeeltelijke artikelmapping | 14 |
+| Ongeldig numeriek artikelveld | 7 |
+
+Van de 1.629 klachten zonder bruikbare code hebben 1.563 een volledig leeg artikelveld; de overige bevatten bijvoorbeeld `nvt` of vrije tekst. **1.963 klachten kunnen op basis van deze bron niet eenduidig automatisch worden gekoppeld.** Voor volledige dekking zijn aanvullende artikel-/contractgegevens of handmatige keuzes nodig.
+
+Via **Contractkoppelingen** zoek je de klacht, bekijk je de koppelstatus en kandidaten en kies je **Koppelen / wijzigen**. Een handmatig contract kan ook worden ingevuld als het niet in de mapping voorkomt. Handmatige koppelingen worden lokaal bewaard op de combinatie meldingnummer + aanmelddatum; bij dubbele combinaties worden ze niet toegepast. Bronkolommen blijven onveranderd. Verwijderen van een handmatige koppeling herstelt de bron-/mappinglogica. Exporteer/importeer de handmatige koppelingen als JSON om ze mee te nemen naar een andere browser of HTML-versie. De datum van een melding wijzigen betekent dat een oude handmatige koppeling niet automatisch wordt hergebruikt.
+
+De kwaliteitstabel en de CSV-export bevatten het bronartikelveld, het uiteindelijke contract, de koppelstatus, kandidaten en het oorspronkelijke contract. De datakwaliteitspagina toont de koppelaantallen. Bij een contractfilter tellen alleen meldingen met dat toegewezen contract mee; ongekoppelde klachten blijven wel in het ongefilterde Q2/Q3-totaal.
+
+`validate_contracts.py` berekent de koppelaantallen onafhankelijk in Python. `contract_validation_report.json` bevat het resultaat. `test_contracts.cjs` controleert dezelfde aantallen in de browser, Excel-herimport, meerdere artikelen per contract, onvolledige en dubbelzinnige matches, handmatige koppeling, bronbehoud, contractfilter en JSON-opslag.

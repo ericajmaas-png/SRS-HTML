@@ -26,6 +26,11 @@ def extract(path):
                 vals.append(v)
             rows.append({'row':row[0].row,'v':vals})
         result[name]=rows
+    mapping_sheet=next((s for s in wb if s.title.strip().casefold() in ('contact artikel mapping','contract artikel mapping')),None)
+    if mapping_sheet is not None:
+        if [str(mapping_sheet.cell(1,c).value).strip().casefold() for c in (1,2)]!=['inkoopcontract','artikel']:
+            raise ValueError('Contractmapping: verwacht kolommen Inkoopcontract en Artikel')
+        result['ContractMapping']=[{'row':i,'v':[c.value if c.data_type!='e' else {'error':c.value} for c in row]} for i,row in enumerate(mapping_sheet.iter_rows(min_row=2,max_col=3),2) if any(c.value is not None for c in row)]
     complaints=[r for r in result['Q2&3'] if str(r['v'][3]).strip().lower()=='klacht']
     print(json.dumps({'records':{k:len(v) for k,v in result.items()},'klachten':len(complaints),'afgesloten_met_datum':sum(r['v'][17]=='5. Afgemeld' and bool(r['v'][30]) for r in complaints)},ensure_ascii=False))
     return result
