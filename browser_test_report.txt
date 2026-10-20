@@ -1,2 +1,2 @@
-PASS: independent Python KPI references; 5 pages; search/sort; CSV; supplier multiselect; date, month, contract filters; drilldown; info; Excel upload parity; zero/missing/conflicting scores; negative and zero weights; mobile width; no JS errors or external requests.
+PASS: independent Python KPI references; 5 pages; search/sort; CSV; supplier multiselect; date, month, contract filters; drilldown; no KPI cards; Excel upload parity; zero/missing/conflicting scores; negative and zero weights; mobile width; no JS errors or external requests.
 {"q2":11.940940531305126,"s1":5.0486787204450625,"s2":10.003548761074848,"closed":2016,"open":161,"hr":[70,70,70,60,60,40,10]}
