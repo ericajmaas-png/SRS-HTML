@@ -21,7 +21,7 @@ Vijf pagina's: management, kwaliteit, duurzaamheid, leveranciersvergelijking en 
 
 Datumbereik filtert uitsluitend Q op aanmelddatum. **Boekmaand S2** filtert uitsluitend circulariteit: de bron bevat `01` t/m `06`, zonder jaar; er wordt geen jaar verzonnen. Contract filtert Q en S2. S1 en S3 volgen uitsluitend de leverancierselectie. Kalenderdagen zijn verschillen tussen lokale kloktijden; een dag tijdens een zomer-/wintertijdwisseling telt als één kalenderdag.
 
-Leveranciers worden uitsluitend gekoppeld door volledige naam na trimmen, samenvoegen van overtollige spaties en hoofdletterongevoelige vergelijking. Voorloopnullen blijven behouden; geen fuzzy matching of afgeleide codes. `(leeg)` wordt als ontbrekend behandeld. Records zonder leverancier tellen wel in algemene Q/S2-totalen, maar worden niet aan een leverancier toegeschreven.
+Leveranciers worden gekoppeld door volledige naam na trimmen, samenvoegen van overtollige spaties en hoofdletterongevoelige vergelijking, aangevuld met expliciet beheerde naamkoppelingen. Voorloopnullen blijven behouden; geen fuzzy matching of afgeleide codes. `(leeg)` wordt als ontbrekend behandeld. Records zonder leverancier tellen wel in algemene Q/S2-totalen, maar worden niet aan een leverancier toegeschreven.
 
 ## Validatie en bekende bronbeperkingen
 
@@ -55,3 +55,17 @@ De functionele browsertest staat in `test_browser.cjs` en gebruikt Playwright 1.
 Het dashboard toont uitsluitend Q-02, Q-03, S-01, S-02 en S-03 als prestatie-indicatoren. De KPI-kaarten en aanvullende grafieken met klachten per maand en statusverdelingen zijn verwijderd. Filters, KPI-uitsplitsingen, bronrecords en technische datakwaliteitscontroles blijven beschikbaar.
 
 De twee kwaliteitsgrafieken heten **Q2 – Doorlooptijd afgesloten klachten per leverancier** en **Q3 – Gemiddelde leeftijd openstaande klachten per leverancier**. Beide tonen gemiddelden in dagen met één decimaal. De leeftijdsgroepen zijn vervangen door Q3-gemiddelden. Drilldown bevat uitsluitend de bijbehorende afgesloten (Q2) of openstaande (Q3) klachten.
+
+## Leveranciers groeperen
+
+Via **Leveranciers groeperen** kun je oorspronkelijke namen zoeken, meerdere namen selecteren en koppelen aan één hoofdnaam. De koppeling geldt voor alle tabbladen, filters, vergelijkingen en KPI-berekeningen, en wordt na een nieuwe Excel-import opnieuw toegepast. Standaard vallen `Prysmian`, `Prysmian Group`, `Prysmian Netherlands B.V.` en `Prysmian Netherlands BV` onder **Prysmian Group** (expliciet door de gebruiker aangewezen varianten). Voor andere leveranciers worden duidelijke schrijfvarianten automatisch gegroepeerd; verschillen in landnaam, Group of Holding worden als voorstel getoond. Er wordt geen fuzzy matching gebruikt.
+
+Koppelingen blijven lokaal in de browser opgeslagen; opslag bij rechtstreeks openen van een HTML-bestand kan per browser en bestandspad verschillen. Gebruik **Koppelingen exporteren/importeren** om de JSON-koppelingen naar een andere computer of HTML-versie mee te nemen. Import vervangt de huidige koppelingen. Je kunt elke koppeling afzonderlijk verwijderen. Het bronbestand en de oorspronkelijke namen in ruwe bronrecords blijven ongewijzigd. Groeperen reset de leverancierselectie; datum-, maand- en contractfilters blijven behouden. S1 telt één geldige score per gegroepeerde leverancier; conflicterende S1/S3-scores worden uitgesloten in plaats van willekeurig gekozen. Q telt de relevante meldingen en S2 telt de gewichten op, inclusief negatieve gewichten.
+
+### Automatische herkenning voor alle leveranciers
+
+**Leveranciers groeperen** scant alle tabbladen. Standaard worden namen samengevoegd wanneer ze na normalisatie van hoofdletters, leestekens en overtollige spaties exact gelijk zijn; bijvoorbeeld `Acme Netherlands B.V.` en `Acme Netherlands BV`. Dit is uitschakelbaar. Letters en cijfers veranderen niet; `Bedrijf 0021` en `Bedrijf 21` blijven verschillend.
+
+Voor namen met dezelfde basis en verschillende achtervoegsels (`Group`, `Groep`, `Holding`, `Holdings`, `Netherlands`, `Nederland`, `BV`, `NV`, `Ltd`, `Limited`, `GmbH`, `Inc`, `LLC`) worden groepsvoorstellen getoond. Controleer de voorgestelde groepen, vink ze aan en kies **Geselecteerde voorstellen toepassen**. De kortste bestaande naam is de voorgestelde hoofdnaam; via de handmatige functie kun je een andere hoofdnaam kiezen. Voorstellen bewijzen geen gezamenlijke bedrijfsidentiteit: juridische entiteiten kunnen verschillend zijn. Bevestiging slaat de koppelingen op voor volgende imports. Nieuwe, niet-herkende namen blijven apart.
+
+`test_aliases.cjs` controleert groepering, behoud van bronnamen, KPI-aggregatie, browseropslag, JSON-import/export, het afwijzen van circulaire koppelingen, automatische schrijfvarianten, groepsvoorstellen, uitschakelen van automatische herkenning en behoud van voorloopnullen.

@@ -1,0 +1,1 @@
+PASS: four Prysmian names grouped; original names preserved; Q records combined; S1/S3 counted once; S2 weighted correctly; UI create/remove; JSON export/import; cyclic import rejected without mutation; mappings survive reload and apply to fresh data; automatic punctuation grouping; auto toggle; country/group suggestions and batch apply; leading zeros preserved.
