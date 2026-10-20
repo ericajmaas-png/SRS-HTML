@@ -31,6 +31,20 @@ def extract(path):
         if [str(mapping_sheet.cell(1,c).value).strip().casefold() for c in (1,2)]!=['inkoopcontract','artikel']:
             raise ValueError('Contractmapping: verwacht kolommen Inkoopcontract en Artikel')
         result['ContractMapping']=[{'row':i,'v':[c.value if c.data_type!='e' else {'error':c.value} for c in row]} for i,row in enumerate(mapping_sheet.iter_rows(min_row=2,max_col=3),2) if any(c.value is not None for c in row)]
+    for name in ('L','T','C',"KPI's"):
+        if name not in wb.sheetnames: continue
+        rows=[]
+        for row in wb[name].iter_rows():
+            if not any(c.value is not None for c in row):continue
+            vals=[]
+            for c in row:
+                v=c.value
+                if isinstance(v,(datetime.datetime,datetime.date,datetime.time)):v=v.isoformat()
+                if c.data_type=='e':v={'error':v}
+                if name in ('L','T','C') and c.column in (2,4,6,7,8,9,10,11,12,13,14):v=None
+                vals.append(v)
+            rows.append({'row':row[0].row,'v':vals})
+        result[name]=rows
     complaints=[r for r in result['Q2&3'] if str(r['v'][3]).strip().lower()=='klacht']
     print(json.dumps({'records':{k:len(v) for k,v in result.items()},'klachten':len(complaints),'afgesloten_met_datum':sum(r['v'][17]=='5. Afgemeld' and bool(r['v'][30]) for r in complaints)},ensure_ascii=False))
     return result

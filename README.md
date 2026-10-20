@@ -1,104 +1,92 @@
 # Alliander Supplier Rating System
 
-Open **Alliander_SRS_Dashboard.html** rechtstreeks in Edge of Chrome. Dit is het complete, zelfstandige dashboard: de dataset, Excel-parser (SheetJS CE 0.18.5, Apache 2.0), CSS en JavaScript zijn ingebed. Internet, installatie en een webserver zijn voor gebruik niet nodig. Het bestand bevat leveranciers- en meldingsgegevens; deel het als brondata.
+Open **Alliander_SRS_Dashboard.html** in Edge of Chrome. Het bestand bevat alle CSS, JavaScript, grafiekcode, Excel-parser en brondata. Internet, backend en installatie zijn voor gebruik niet nodig.
 
-## Gebruik
+Het dashboard heeft acht tabs: Managementoverzicht, Kwaliteit, Logistiek, Techniek, Commercieel, Duurzaamheid, Leveranciersvergelijking en Datakwaliteit. Het overzicht toont alle 29 genummerde KPI-definities uit **KPI’s**. De eerder verwijderde KPI-kaarten blijven verwijderd.
 
-Vijf pagina's: management, kwaliteit, duurzaamheid, leveranciersvergelijking en datakwaliteit. Kies meerdere leveranciers via de zoekbare keuzelijst. Een lege selectie betekent alle leveranciers. Grafiekbalken openen bronrecords; de berekeningen staan hieronder beschreven. Tabellen ondersteunen zoeken, sorteren, rijdetails en CSV-export (alle gefilterde zoekresultaten, maximaal 500 rijen zichtbaar). Download-CSV gebruikt puntkomma's, UTF-8 BOM en beschermt tegen formule-injectie. Ontbrekende gegevens verschijnen als **Geen data**, geldige nullen blijven nul.
+## Actuele bron en volledigheid
 
-**Excel laden** vervangt de dataset alleen in het huidige venster, zonder upload naar een server. Heropenen herstelt de ingebedde brondata. Een bijgewerkt bestand moet dezelfde tabbladen en kolomstructuur gebruiken. Sla Excel-formules eerst op met actuele berekende resultaten: de parser voert geen Excel-formules uit. Voor een nieuw zelfstandig HTML-bestand met bijgewerkte ingebedde data: gebruik het bouwscript hieronder.
+De actuele bron is `data/SRS data & KPI berekening - QLTCS-v2.xlsx`, de laatst aangeleverde versie met een eigen logistieke vragenlijst. De bron is uitsluitend gelezen en ongewijzigd gekopieerd. SHA-256: `8971153424581bfcc91f3d08856b9299727559febfd39241ac99bb95b9196179`.
+
+**24 van de 29 KPI’s zijn met deze bron berekenbaar.** Q-01 en Q-04 ontbreken als meetdata; L-01, L-02 en L-03 vereisen order-, leverings- en bevestigingsgegevens die niet zijn aangeleverd. Deze vijf KPI’s zijn zichtbaar met de reden waarom geen score kan worden berekend. Ontbrekende antwoorden krijgen nooit automatisch nul.
 
 ## Mapping en berekeningen
 
-| KPI / bron | Mapping en verwerking |
+| Bron | Mapping / verwerking |
 |---|---|
-| Q2&3 vanaf rij 2 | A aanmelding; B nummer; D soort; F leverancier; G omschrijving; O contractmanager; P contract; R status; S/T categorie/subcategorie; AE afmelding; AF/AG alleen bronvergelijking. AB/AC/AD blijven in ruwe bronrecords beschikbaar. |
-| Q-02 | Alleen `Klacht`, status `5. Afgemeld`, geldige A en AE. Gemiddelde `(AE-A)` in kalenderdagen inclusief kloktijd, één decimaal. Aantal afgesloten klachten erbij. |
-| Q-03 | Alleen `Klacht`, status niet `5. Afgemeld`, geen geldige AE en geldige A. Kalenderleeftijd tot de actuele kloktijd in Europe/Amsterdam, elke minuut bijgewerkt. De grafiek Q3 toont het gemiddelde aantal dagen per leverancier. |
-| S1 | Rij 7 bevat daadwerkelijk de kop; data vanaf rij 8. A leverancier; B/C matchtypes; D ladder; E SBTi; F opgeslagen punten; G datakwaliteit. Unieke leveranciers met numerieke scores worden gemiddeld. |
-| S2 vanaf rij 8 | A boekmaand; B leverancier; C contract; D circulair gewicht; E totaalgewicht; F bronfractie. `100 × SOM(D) / SOM(E)`, inclusief negatieve gewichten, alleen rijen met twee numerieke gewichten. Noemer nul = geen score. |
-| S3 vanaf rij 12 | A leverancier; B:F componenten; G score (ook tekst `70/100`); H leidende tekstuele band; I verbeterstappen. Bij meerdere leveranciers: verdeling over banden, geen categorie-gemiddelde. |
+| Q2&3, vanaf rij 2 | A aanmelding; B meldingnummer; D soort; E artikelnummer(s); F leverancier; G omschrijving; H uitgestuurd naar leverancier; O contractmanager; P bestaand contract; R status; S/T categorie; AE afmelding. AF/AG zijn uitsluitend bronkolommen, geen rekenbasis. |
+| Q-01 | DPPM vereist defectaantallen en totale aantallen artikelen. Niet beschikbaar. De procentuele klassegrenzen in KPI’s zijn bovendien niet eenduidig. Geen verzonnen score. |
+| Q-02 | Alleen Klacht met status `5. Afgemeld`, geldige H en AE en AE≥H. Gemiddelde werkdagen tussen uitsturen en afmelden. **42** van **2.016** afgesloten klachten zijn berekenbaar; gemiddelde **45,6732638889 werkdagen**, weergegeven als **45,7**. Een ontbrekende H wordt niet vervangen door A. |
+| Q-03 | Alleen Klacht met status niet `5. Afgemeld`, geen geldige AE en geldige A die niet in de toekomst ligt. Gemiddelde werkdagen vanaf A tot de actuele kloktijd in Europe/Amsterdam. **161** openstaande klachten. Wordt iedere minuut bijgewerkt. |
+| Q-04 | SQA-assessment ontbreekt. Geen score. |
+| S1 | Kop op rij 7, data vanaf rij 8. A leverancier; D ladder; E SBTi; F opgeslagen punten; G datakwaliteit. Gemiddelde over unieke leveranciers met geldige, eenduidige score. Identieke duplicaten tellen één keer; conflicterende scores worden uitgesloten. |
+| S2, vanaf rij 8 | A boekmaand; B leverancier; C contract; D circulair gewicht; E totaalgewicht; F bronfractie. Berekening **100 × SOM(D) / SOM(E)**, inclusief negatieve gewichten; uitsluitend twee numerieke gewichten. Noemer nul levert geen score. |
+| S3, vanaf rij 12 | A leverancier; B:F componenten; G score (ook tekst `70/100`); H leidende tekstuele volwassenheidsband; I verbeteracties. Meerdere leveranciers: verdeling over banden, geen gemiddelde van categorieën. |
+| KPI’s | Kolom A genummerde KPI-code; B cluster; C criterium; E bron; G definitie; L:P antwoordcategorieën. Numerieke punten uit de vervolgregels van hetzelfde KPI-blok. Alleen Q/L/T/C/S met code `X-00` worden opgenomen; ongenummerde toekomstige ideeën niet. |
+| L / T / C | Rij 1 kop, eventuele toelichtingsrijen zonder responsnummer worden overgeslagen. A respons-ID; E voltooid; O beoordelingsjaar; P kwartaal; Q contract. Alleen voltooide, niet-conflicterende responsen tellen mee. |
 
-Datumbereik filtert uitsluitend Q op aanmelddatum. **Boekmaand S2** filtert uitsluitend circulariteit: de bron bevat `01` t/m `06`, zonder jaar; er wordt geen jaar verzonnen. Contract filtert Q en S2. S1 en S3 volgen uitsluitend de leverancierselectie. Kalenderdagen zijn verschillen tussen lokale kloktijden; een dag tijdens een zomer-/wintertijdwisseling telt als één kalenderdag.
+**Werkdagen** zijn maandag t/m vrijdag, berekend over het halfopen tijdinterval tussen de twee tijdstippen, inclusief gedeeltelijke dagen. Weekenden tellen niet mee; feestdagen worden niet afgetrokken omdat geen feestdagenkalender is aangeleverd. Lokale kloktijd is leidend, zonder zomer-/wintertijdcorrectie. De gebruiker heeft deze werkdagdefinitie uit het KPI-werkblad bevestigd; dit vervangt de eerdere kalenderdagen en de vroegere Q-02-berekening vanaf A.
 
-Leveranciers worden gekoppeld door volledige naam na trimmen, samenvoegen van overtollige spaties en hoofdletterongevoelige vergelijking, aangevuld met expliciet beheerde naamkoppelingen. Voorloopnullen blijven behouden; geen fuzzy matching of afgeleide codes. `(leeg)` wordt als ontbrekend behandeld. Records zonder leverancier tellen wel in algemene Q/S2-totalen, maar worden niet aan een leverancier toegeschreven.
+### Logistiek
 
-## Validatie en bekende bronbeperkingen
+Vijf logistieke responsen. R → L-04 SCRA; T → L-05 ASL; V → L-06 contingencyplan. Antwoorden worden gekoppeld aan de bronrubriek: 0/50/100 punten. De antwoordvariant `Ja, en afgelopen jaar bevestigd` is expliciet gelijkgesteld aan de rubricering `Ja, en actualiteit afgelopen jaar bevestigd`.
 
-- Import: 5.300 Q-records, 4.597 S1-records inclusief 254 naamloze formule-rijen, 92 S2-records, 7 S3-records.
-- 2.177 klachten: 2.016 geldig afgesloten en 161 openstaand. Q-02 **11,9409405313 dagen**; S-02 **10,0035487611%**.
-- S1: 1.463 extra records voor herhaalde leveranciersnamen; identieke scores tellen één keer. Vier leveranciers hebben conflicterende punten en krijgen geen geaggregeerde S1-score. 2.876 unieke leveranciers met geldige, eenduidige score; gemiddelde **5,0486787204 punten**. Naamloze nulregels worden niet als leverancier geteld.
-- S2: twee records met negatieve gewichten, zes met totaalgewicht nul en zes Excel-fouten in F. Negatieve records zijn behouden; F-fouten blokkeren een geldige D/E-berekening niet. De `(leeg)`-rij blijft aanwezig in de importcontrole.
-- S3: scores 70, 70, 70, 60, 60, 40 en 10; vijfmaal `Ontwikkeld publiek aantoonbaar`, éénmaal `Basis publiek aantoonbaar`, éénmaal `Beperkt publiek aantoonbaar`.
-- Geen dubbele meldingnummers in deze bron. Toekomstige dubbelingen worden zichtbaar gemeld, niet automatisch verwijderd: zonder bronbeslissing is niet te bepalen welke melding behouden moet blijven. Bij conflicterende S3-duplicaten wordt evenmin een band gekozen.
-- AF bevat geen vergelijkbare numerieke duren. Van 2.016 AG-waarden wijken 1.080 meer dan één minuut af van AE−A. AG is daarom geen rekenbasis. Zie `validation_report.json`.
-- Negatieve klachtduur en toekomstige aanmeldingen worden als ongeldige berekeningen gemeld en uitgesloten. Ontbrekende afmelddatum is op zichzelf geen fout bij openstaande klachten.
-- De vormgeving gebruikt het groen, oranje en bordeauxrood van het aangeleverde Alliander-logo. Benaderde kleuren: groen `#62892f` / `#719a34`, donkergroen `#344b1c`, oranje `#ef7d00` en bordeauxrood `#8c171b`. Dit zijn visuele benaderingen van de afbeelding, geen geverifieerde officiële kleurcodes. De productnaam is **Supplier Rating System**.
-- Gecontroleerd met Chromium (desktop en mobiel), inclusief netwerkblokkering voor externe verzoeken en browser in een andere tijdzone. Geen afzonderlijke uitvoering in Microsoft Edge. Rechtstreekse `file://`-navigatie is door het beheerde testbrowserbeleid geblokkeerd; de tests gebruikten een lokale statische server. Het product zelf gebruikt geen serverfunctionaliteit.
+Over alle vijf responsen: L-04 **50**, L-05 **30**, L-06 **80** punten. Eén respons heeft geen contract/leverancier en beoordelingsjaar 2028; deze blijft in het ongefilterde totaal zichtbaar en valt weg bij de betreffende filters. Toekomstige beoordelingsjaren worden in Datakwaliteit gemeld.
 
-## Reproduceren met Python
+### Techniek
+
+Drie responsen. R/T/V/X/Z/AB → T-01 t/m T-06. Punten volgen de bijbehorende antwoordrubriek. De taalkundige variant van het gedeeltelijke roadmapantwoord voor T-01 is expliciet gekoppeld aan 50 punten. Over alle responsen: **50; 43,3333; 70; 0; 100; 58,3333** punten.
+
+### Commercieel
+
+27 responsen. R → C-01, T → C-02, V:Z → C-03, AB → C-04, AD → C-05, AF → C-06, AH → C-07, AJ → C-08, AL → C-09, AN → C-10. Toelichtingen blijven bij de betreffende vraag beschikbaar.
+
+C-03 wordt per respons berekend als het gemiddelde van de vijf componenten (Niet=0, Deels=50, Volledig=100); alle vijf antwoorden zijn vereist. Daarna worden de geldige responsscores gemiddeld. Het gecombineerde antwoord over reguliere flexibiliteit / geen flexibiliteitsverzoeken krijgt de expliciet vermelde **60** punten uit de bron. C-07 t/m C-10 hebben elk 17 ingevulde antwoorden; de tien lege antwoorden tellen niet als nul.
+
+**Let op C-06:** de bron kent `Geen=0`, `Nagenoeg geen=25`, `Gemiddeld=50`, `Regelmatig=75`, `Vaak=100` toe aan verkeerde facturen. Deze inhoudelijk opvallende richting wordt letterlijk gevolgd en zichtbaar toegelicht, niet stilzwijgend omgekeerd.
+
+### Aggregatie en koppeling
+
+Scores van de vragenlijsten zijn gemiddelden over geldige voltooide responsen. Meerdere beoordelingen van hetzelfde contract blijven afzonderlijke beoordelingen. Exact dubbele respons-ID’s binnen hetzelfde tabblad tellen één keer; conflicterende dubbele ID’s worden uitgesloten. Er wordt geen gewogen totaalscore verzonnen: de bronwegingen zijn deels als Excel-datum opgeslagen en vormen geen betrouwbaar numeriek weegschema.
+
+De leveranciersnaam van een assessment wordt gelezen uit het contractveld vóór de dubbele spaties. De respondentnaam wordt nooit als leverancier gebruikt. Zonder contract wordt geen leverancier geraden; zulke responsen tellen wel in het ongefilterde assessmenttotaal. IP-adressen, browsergegevens, respondentnamen en andere niet benodigde enquête-telemetrie zijn uit de ingebedde en lokaal geïmporteerde enquêtegegevens weggelaten. De oorspronkelijke Excel blijft ongewijzigd.
+
+## Filters, details en import
+
+- Leverancierfilter: doorzoekbare multiselect, geldt voor alle bronnen.
+- Aanmelddatumbereik: alleen Q. Boekmaand: alleen S2 (de bron bevat maandnummers zonder jaar).
+- Beoordelingsjaar en -kwartaal: uitsluitend L/T/C, op O/P; niet op de invuldatum.
+- Contract: Q, S2 en L/T/C. Volledige CW-contractnamen uit vragenlijsten worden niet zonder een aparte mapping gelijkgesteld aan SAP-contractnummers.
+- S1/S3 hebben geen periode- of contractfilter.
+- Grafieken openen bronrecords. Vragenlijstpanels tonen definitie, puntentabel en aantallen.
+- Tabellen ondersteunen zoeken, sorteren, rijdetails en CSV-export van alle gefilterde zoekresultaten (maximaal 500 rijen zichtbaar). CSV gebruikt puntkomma’s, UTF-8 BOM en bescherming tegen formule-injectie.
+
+**Excel laden** vervangt de data uitsluitend in het huidige venster. Het bestand wordt niet naar een server verstuurd. Sla Excel-formules vooraf op met berekende uitkomsten: de parser voert geen Excel-formules uit. Het dashboard herkent de bestaande Q/S-structuur en leest optionele L/T/C/KPI’s-tabbladen en de artikel–contractmapping mee. Bij oudere bestanden ontbreken de nieuwe KPI’s expliciet; geen eerdere data blijft ongemerkt hangen. Heropenen herstelt de ingebedde brondata.
+
+## Leveranciers groeperen
+
+Volledige namen worden vergeleken na normalisatie van hoofdletters en spaties; voorloopnullen blijven behouden. Schrijfvarianten met alleen andere leestekens, zoals B.V./BV, worden automatisch gegroepeerd (uitschakelbaar). Verschillen met Group, Holding of landnamen leveren voorstellen op die je bevestigt. Geen fuzzy matching op bedrijfsidentiteit.
+
+Prysmian, Prysmian Group, Prysmian Netherlands B.V. en Prysmian Netherlands BV vallen standaard onder **Prysmian Group**, zoals door de gebruiker aangewezen. Andere groepen kun je beheren via **Leveranciers groeperen**. Koppelingen worden lokaal bewaard en na iedere import opnieuw toegepast; gebruik JSON-export/import voor een andere browser of HTML-versie. Bronnamen blijven in de ruwe bronrecords behouden. Groeperen reset de leverancierselectie, niet de overige filters.
+
+## Artikel–contractmapping
+
+Optioneel tabblad **Contact Artikel mapping** (ook **Contract Artikel mapping**): `Inkoopcontract`, `Artikel`, `Artikelomschrijving`, vanaf rij 2. Een contract kan meerdere artikelen bevatten. Per artikel wordt de verzameling contracten bijgehouden. Alleen als alle gevonden volledige achtcijferige artikelcodes bekend zijn en samen precies één contract opleveren, wordt de klacht automatisch toegewezen. Grote numerieke velden met mogelijk precisieverlies worden niet hersteld of opgedeeld. Bestaande contracten blijven leidend; afwijkingen worden gemeld. P=0 betekent geen contract.
+
+De mapping bevat 5.636 regels, 5.202 artikelen en 197 artikelen met meerdere mogelijke contracten. **214 klachten** zijn automatisch gekoppeld aan **42 contracten**; **1.963** blijven niet eenduidig koppelbaar. Via **Contractkoppelingen** zie je de reden, kandidaten en kun je handmatig kiezen. Handmatige koppelingen worden bewaard op meldingnummer + aanmelddatum en zijn overdraagbaar via JSON. Ze veranderen de bron niet. De kwaliteitstabel/CSV toont bronartikel, oorspronkelijk contract, uiteindelijk contract en koppelstatus.
+
+## Reproduceren en testen
 
 ```sh
 cd /workspace/SRS-HTML
 python -m venv /workspace/scratch/srs-venv
 /workspace/scratch/srs-venv/bin/pip install --cache-dir /tmp/srs-pip-cache -r requirements.txt
-/workspace/scratch/srs-venv/bin/python build_dashboard.py 'data/SRS data & KPI berekening - contractmapping.xlsx'
-/workspace/scratch/srs-venv/bin/python validate_data.py 'data/SRS data & KPI berekening (2).xlsx'
+/workspace/scratch/srs-venv/bin/python build_dashboard.py 'data/SRS data & KPI berekening - QLTCS-v2.xlsx'
+/workspace/scratch/srs-venv/bin/python validate_qltcs.py 'data/SRS data & KPI berekening - QLTCS-v2.xlsx'
 ```
 
-Het bouwscript leest zowel formules als opgeslagen uitkomsten met openpyxl, valideert de tabbladen en embedt JSON veilig in het template. Het bronbestand wordt alleen gelezen. De SHA-256 van de ongewijzigde bronkopie is `baf8cb5c82ce65dfa7334892ec1d70a880c3ca75cbc96fbf017f03439af32369`.
+`qltcs_validation_report.json` bevat de onafhankelijke Python-uitkomsten. De historische `validate_data.py` en `validation_report.json` horen bij de oorspronkelijke kalenderdagdefinitie, niet bij de actuele Q-02-definitie.
 
-`validate_data.py` is een onafhankelijke Python-controle van de oorspronkelijke aangeleverde dataset (referentieaantallen zijn assertions in deze controle, niet in dashboardberekeningen). `vendor/XLSX-LICENSE` bevat de licentie van de ingebedde parser. Het HTML-bestand is het enige benodigde bestand voor eindgebruikers.
+Browsertests gebruiken Playwright 1.56.1, `/usr/bin/chromium` en `NODE_PATH=/workspace/scratch/srs-tools/node_modules`: `test_qltcs.cjs`, `test_browser.cjs`, `test_aliases.cjs`, `test_contracts.cjs`. Uitkomsten staan in de overeenkomstige `*_test_report.txt`-bestanden. De tests gebruiken lokale response-interceptie zonder extern netwerk. Desktop en mobiel zijn getest; geen afzonderlijke Microsoft Edge-uitvoering. Rechtstreekse file-navigatie is door het testbrowserbeleid geblokkeerd; het product gebruikt geen serverfunctionaliteit.
 
-De functionele browsertest staat in `test_browser.cjs` en gebruikt Playwright 1.56.1 met `/usr/bin/chromium`. In deze cloudomgeving: voer `NODE_PATH=/workspace/scratch/srs-tools/node_modules node test_browser.cjs` uit. De test levert het HTML-bestand via lokale browserinterceptie aan en heeft geen serverproces nodig. De test controleert de KPI's onafhankelijk tegen `validation_report.json`, alle vijf pagina's, zoek/sorteer/CSV, meervoudige selectie, alle filters, drilldown, afwezigheid van de verwijderde KPI-kaarten, herimport, geldige nul/conflicterende scores, negatieve en nulgewichten, mobiele breedte en het ontbreken van externe verzoeken. `browser_test_report.txt` bevat de uitkomst. Browserafhankelijkheden zijn uitsluitend voor ontwikkeling; het eindproduct bevat ze niet.
-
-Het dashboard toont uitsluitend Q-02, Q-03, S-01, S-02 en S-03 als prestatie-indicatoren. De KPI-kaarten en aanvullende grafieken met klachten per maand en statusverdelingen zijn verwijderd. Filters, KPI-uitsplitsingen, bronrecords en technische datakwaliteitscontroles blijven beschikbaar.
-
-De twee kwaliteitsgrafieken heten **Q2 – Doorlooptijd afgesloten klachten per leverancier** en **Q3 – Gemiddelde leeftijd openstaande klachten per leverancier**. Beide tonen gemiddelden in dagen met één decimaal. De leeftijdsgroepen zijn vervangen door Q3-gemiddelden. Drilldown bevat uitsluitend de bijbehorende afgesloten (Q2) of openstaande (Q3) klachten.
-
-## Leveranciers groeperen
-
-Via **Leveranciers groeperen** kun je oorspronkelijke namen zoeken, meerdere namen selecteren en koppelen aan één hoofdnaam. De koppeling geldt voor alle tabbladen, filters, vergelijkingen en KPI-berekeningen, en wordt na een nieuwe Excel-import opnieuw toegepast. Standaard vallen `Prysmian`, `Prysmian Group`, `Prysmian Netherlands B.V.` en `Prysmian Netherlands BV` onder **Prysmian Group** (expliciet door de gebruiker aangewezen varianten). Voor andere leveranciers worden duidelijke schrijfvarianten automatisch gegroepeerd; verschillen in landnaam, Group of Holding worden als voorstel getoond. Er wordt geen fuzzy matching gebruikt.
-
-Koppelingen blijven lokaal in de browser opgeslagen; opslag bij rechtstreeks openen van een HTML-bestand kan per browser en bestandspad verschillen. Gebruik **Koppelingen exporteren/importeren** om de JSON-koppelingen naar een andere computer of HTML-versie mee te nemen. Import vervangt de huidige koppelingen. Je kunt elke koppeling afzonderlijk verwijderen. Het bronbestand en de oorspronkelijke namen in ruwe bronrecords blijven ongewijzigd. Groeperen reset de leverancierselectie; datum-, maand- en contractfilters blijven behouden. S1 telt één geldige score per gegroepeerde leverancier; conflicterende S1/S3-scores worden uitgesloten in plaats van willekeurig gekozen. Q telt de relevante meldingen en S2 telt de gewichten op, inclusief negatieve gewichten.
-
-### Automatische herkenning voor alle leveranciers
-
-**Leveranciers groeperen** scant alle tabbladen. Standaard worden namen samengevoegd wanneer ze na normalisatie van hoofdletters, leestekens en overtollige spaties exact gelijk zijn; bijvoorbeeld `Acme Netherlands B.V.` en `Acme Netherlands BV`. Dit is uitschakelbaar. Letters en cijfers veranderen niet; `Bedrijf 0021` en `Bedrijf 21` blijven verschillend.
-
-Voor namen met dezelfde basis en verschillende achtervoegsels (`Group`, `Groep`, `Holding`, `Holdings`, `Netherlands`, `Nederland`, `BV`, `NV`, `Ltd`, `Limited`, `GmbH`, `Inc`, `LLC`) worden groepsvoorstellen getoond. Controleer de voorgestelde groepen, vink ze aan en kies **Geselecteerde voorstellen toepassen**. De kortste bestaande naam is de voorgestelde hoofdnaam; via de handmatige functie kun je een andere hoofdnaam kiezen. Voorstellen bewijzen geen gezamenlijke bedrijfsidentiteit: juridische entiteiten kunnen verschillend zijn. Bevestiging slaat de koppelingen op voor volgende imports. Nieuwe, niet-herkende namen blijven apart.
-
-`test_aliases.cjs` controleert groepering, behoud van bronnamen, KPI-aggregatie, browseropslag, JSON-import/export, het afwijzen van circulaire koppelingen, automatische schrijfvarianten, groepsvoorstellen, uitschakelen van automatische herkenning en behoud van voorloopnullen.
-
-## Artikel–contractkoppeling
-
-De actuele ingebedde dataset komt uit **data/SRS data & KPI berekening - contractmapping.xlsx**. De eerdere bron blijft apart behouden. De nieuwe bron is ongewijzigd gekopieerd; SHA-256 `42455763b74fa7f77f5ac49f18c88b99b668764cee31735b51536a94a4917ec1`.
-
-Optioneel tabblad **Contact Artikel mapping** (ook **Contract Artikel mapping** wordt herkend): rij 1 bevat `Inkoopcontract`, `Artikel`, `Artikelomschrijving`; gegevens vanaf rij 2. Het bouwscript en lokale Excel-upload lezen deze mapping mee. Q gebruikt artikelgegevens uit kolom **E**, bestaande contracten uit **P**. De waarde `0` in P is geen contract. Voor de huidige bron bevatten alle 2.177 klachten P=0.
-
-Een contract kan onbeperkt meerdere artikelen bevatten. De index is artikel → verzameling contracten; dubbele identieke mappingregels tellen niet dubbel. Artikelcodes worden exact vergeleken, met behoud van voorloopnullen. De klachtenbron bevat achtcijferige artikelcodes; uit E worden volledige achtcijferige tokens gelezen, ook bij meerdere artikelen of een omschrijving. Grote onveilige numerieke waarden worden niet opgedeeld of hersteld, omdat Excel daarin precisie kan hebben verloren.
-
-Automatische toewijzing vereist dat **alle gevonden artikelcodes** voorkomen in de mapping en hun gecombineerde contractverzameling precies één contract bevat. Meerdere artikelen die allemaal onder hetzelfde contract vallen, zijn dus automatisch koppelbaar. Artikelen met meerdere mogelijke contracten, onbekende codes of een gedeeltelijke match worden niet gegokt. Bestaande contracten blijven leidend; een afwijking van de mapping wordt gemeld. Handmatige koppelingen hebben voorrang. Er wordt niet op alleen leveranciersnaam of omschrijving gegokt.
-
-Bij de aangeleverde mapping:
-
-| Controle | Aantal |
-|---|---:|
-| Mappingregels | 5.636 |
-| Unieke artikelen | 5.202 |
-| Artikelen met meerdere contracten | 197 |
-| Automatisch gekoppelde klachten | 214 |
-| Contracten met gekoppelde klachten | 42 |
-| Geen bruikbare achtcijferige artikelcode | 1.629 |
-| Meerdere mogelijke contracten | 212 |
-| Artikel niet in mapping | 101 |
-| Gedeeltelijke artikelmapping | 14 |
-| Ongeldig numeriek artikelveld | 7 |
-
-Van de 1.629 klachten zonder bruikbare code hebben 1.563 een volledig leeg artikelveld; de overige bevatten bijvoorbeeld `nvt` of vrije tekst. **1.963 klachten kunnen op basis van deze bron niet eenduidig automatisch worden gekoppeld.** Voor volledige dekking zijn aanvullende artikel-/contractgegevens of handmatige keuzes nodig.
-
-Via **Contractkoppelingen** zoek je de klacht, bekijk je de koppelstatus en kandidaten en kies je **Koppelen / wijzigen**. Een handmatig contract kan ook worden ingevuld als het niet in de mapping voorkomt. Handmatige koppelingen worden lokaal bewaard op de combinatie meldingnummer + aanmelddatum; bij dubbele combinaties worden ze niet toegepast. Bronkolommen blijven onveranderd. Verwijderen van een handmatige koppeling herstelt de bron-/mappinglogica. Exporteer/importeer de handmatige koppelingen als JSON om ze mee te nemen naar een andere browser of HTML-versie. De datum van een melding wijzigen betekent dat een oude handmatige koppeling niet automatisch wordt hergebruikt.
-
-De kwaliteitstabel en de CSV-export bevatten het bronartikelveld, het uiteindelijke contract, de koppelstatus, kandidaten en het oorspronkelijke contract. De datakwaliteitspagina toont de koppelaantallen. Bij een contractfilter tellen alleen meldingen met dat toegewezen contract mee; ongekoppelde klachten blijven wel in het ongefilterde Q2/Q3-totaal.
-
-`validate_contracts.py` berekent de koppelaantallen onafhankelijk in Python. `contract_validation_report.json` bevat het resultaat. `test_contracts.cjs` controleert dezelfde aantallen in de browser, Excel-herimport, meerdere artikelen per contract, onvolledige en dubbelzinnige matches, handmatige koppeling, bronbehoud, contractfilter en JSON-opslag.
+De vormgeving gebruikt benaderde kleuren uit het aangeleverde Alliander-logo: groen #62892f/#719a34, donkergroen #344b1c, oranje #ef7d00 en bordeauxrood #8c171b. De lokaal ingebedde Excel-parser is SheetJS CE 0.18.5 (Apache 2.0); licentie in `vendor/XLSX-LICENSE`. Alleen het HTML-bestand is nodig voor eindgebruik.
