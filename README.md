@@ -2,7 +2,7 @@
 
 Open **Alliander_SRS_Dashboard.html** in Edge of Chrome. Het bestand bevat alle CSS, JavaScript, grafiekcode, Excel-parser en brondata. Internet, backend en installatie zijn voor gebruik niet nodig.
 
-Het dashboard heeft acht tabs: Managementoverzicht, Kwaliteit, Logistiek, Techniek, Commercieel, Duurzaamheid, Leveranciersvergelijking en Datakwaliteit. Het overzicht toont alle 29 genummerde KPI-definities uit **KPI’s**. De eerder verwijderde KPI-kaarten blijven verwijderd.
+Het dashboard heeft negen tabs: Managementoverzicht, Kwaliteit, Logistiek, Techniek, Commercieel, Duurzaamheid, Leveranciersprofiel, Leveranciersvergelijking en Datakwaliteit. Het overzicht toont alle 29 genummerde KPI-definities uit **KPI’s**. De eerder verwijderde KPI-kaarten blijven verwijderd.
 
 ## Actuele bron en volledigheid
 
@@ -90,3 +90,11 @@ python -m venv /workspace/scratch/srs-venv
 Browsertests gebruiken Playwright 1.56.1, `/usr/bin/chromium` en `NODE_PATH=/workspace/scratch/srs-tools/node_modules`: `test_qltcs.cjs`, `test_browser.cjs`, `test_aliases.cjs`, `test_contracts.cjs`. Uitkomsten staan in de overeenkomstige `*_test_report.txt`-bestanden. De tests gebruiken lokale response-interceptie zonder extern netwerk. Desktop en mobiel zijn getest; geen afzonderlijke Microsoft Edge-uitvoering. Rechtstreekse file-navigatie is door het testbrowserbeleid geblokkeerd; het product gebruikt geen serverfunctionaliteit.
 
 De vormgeving gebruikt benaderde kleuren uit het aangeleverde Alliander-logo: groen #62892f/#719a34, donkergroen #344b1c, oranje #ef7d00 en bordeauxrood #8c171b. De lokaal ingebedde Excel-parser is SheetJS CE 0.18.5 (Apache 2.0); licentie in `vendor/XLSX-LICENSE`. Alleen het HTML-bestand is nodig voor eindgebruik.
+
+## KPI-weergave
+
+De categoriepagina’s gebruiken compacte horizontale staafdiagrammen. Puntenscores hebben overal een vaste schaal van 0–100; een score van 50 beslaat dus steeds de helft van de schaal. Werkdagen hebben een zichtbare dynamische schaal. Circulariteit gebruikt minimaal 0–100%, met een uitgebreider bereik bij negatieve of hogere waarden. Uitkomst en aantal metingen blijven zichtbaar; de gewogen circulariteit wordt niet vervangen door een gemiddelde van leverancierspercentages.
+
+Vragenlijst-KPI’s tonen daarnaast gestapelde antwoordverdelingen per leverancier, met een legenda en tooltips. Segmenten tellen geldige antwoorden naar de bronrubriek; ontbrekende/ongeldige scores staan apart vermeld en worden geen nul. C3 toont vijf componentantwoorden per volledig ingevulde respons, dus 135 componentantwoorden bij 27 geldige responsen. Klik een segment voor de bijbehorende responsen; bij C3 worden de bronresponsen getoond die minstens één component in die categorie hebben. De kleuren onderscheiden puntencategorieën en zijn geen onafhankelijk oordeel over goed/slecht.
+
+Via **Leveranciersprofiel** kies je één leverancier en optioneel een tweede. Alle 29 KPI’s staan per categorie onder elkaar, inclusief eenheden, aantallen, ontbrekende-dataredenen en bronrecords. Puntenscores gebruiken 0–100; beide profielen delen dezelfde werkdagenschaal. De bestaande globale filters blijven van toepassing; de keuzelijsten bevatten alleen leveranciers binnen de globale leverancierselectie. De zoekfunctie beperkt de leverancierskeuzelijsten. `test_visuals.cjs` controleert schalen, verdelingen, profielen, filters, bronrecords en mobiele weergave; uitkomst in `visuals_test_report.txt`.

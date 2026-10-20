@@ -1,0 +1,1 @@
+PASS: 9 navigation pages; fixed 0–100 score scales; 50-point bars remain 50%; answer distributions match response counts; C3 component denominator 135; segment drilldown; two 29-KPI supplier profiles; selected supplier scores and missing-data messages; assessment filters; profile search; mobile widths; no JS errors.
