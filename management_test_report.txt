@@ -1,0 +1,1 @@
+PASS: 5 management categories and 29 KPI rows; 24 available in full selection; no matrix or KPI cards; Q2 value and 42/2016 coverage; fixed score scale; missing-source messages; Q2/T1 and distribution drilldown; year/quarter/supplier filters; category and profile navigation; mobile width; no JS errors.
