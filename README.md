@@ -1,4 +1,4 @@
-# Alliander SRS Dashboard
+# Alliander Supplier Rating System
 
 Open **Alliander_SRS_Dashboard.html** rechtstreeks in Edge of Chrome. Dit is het complete, zelfstandige dashboard: de dataset, Excel-parser (SheetJS CE 0.18.5, Apache 2.0), CSS en JavaScript zijn ingebed. Internet, installatie en een webserver zijn voor gebruik niet nodig. Het bestand bevat leveranciers- en meldingsgegevens; deel het als brondata.
 
@@ -33,7 +33,7 @@ Leveranciers worden uitsluitend gekoppeld door volledige naam na trimmen, samenv
 - Geen dubbele meldingnummers in deze bron. Toekomstige dubbelingen worden zichtbaar gemeld, niet automatisch verwijderd: zonder bronbeslissing is niet te bepalen welke melding behouden moet blijven. Bij conflicterende S3-duplicaten wordt evenmin een band gekozen.
 - AF bevat geen vergelijkbare numerieke duren. Van 2.016 AG-waarden wijken 1.080 meer dan één minuut af van AE−A. AG is daarom geen rekenbasis. Zie `validation_report.json`.
 - Negatieve klachtduur en toekomstige aanmeldingen worden als ongeldige berekeningen gemeld en uitgesloten. Ontbrekende afmelddatum is op zichzelf geen fout bij openstaande klachten.
-- De groene vormgeving volgt de gevraagde uitstraling; officiële huisstijlkleurcodes konden niet worden geverifieerd doordat de officiële website netwerktoegang weigerde. Er wordt geen officiële huisstijlcertificering geclaimd.
+- De vormgeving gebruikt het groen, oranje en bordeauxrood van het aangeleverde Alliander-logo. Benaderde kleuren: groen `#62892f` / `#719a34`, donkergroen `#344b1c`, oranje `#ef7d00` en bordeauxrood `#8c171b`. Dit zijn visuele benaderingen van de afbeelding, geen geverifieerde officiële kleurcodes. De productnaam is **Supplier Rating System**.
 - Gecontroleerd met Chromium (desktop en mobiel), inclusief netwerkblokkering voor externe verzoeken en browser in een andere tijdzone. Geen afzonderlijke uitvoering in Microsoft Edge. Rechtstreekse `file://`-navigatie is door het beheerde testbrowserbeleid geblokkeerd; de tests gebruikten een lokale statische server. Het product zelf gebruikt geen serverfunctionaliteit.
 
 ## Reproduceren met Python
