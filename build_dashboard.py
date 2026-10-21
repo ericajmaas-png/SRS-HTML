@@ -7,6 +7,12 @@ ROOT=pathlib.Path(__file__).parent
 def extract(path):
     formulas=openpyxl.load_workbook(path,data_only=False)
     wb=openpyxl.load_workbook(path,data_only=True)
+    for book in (wb, formulas):
+        names=[s.title.strip().casefold() for s in book]
+        if len(names)!=len(set(names)): raise ValueError('Dubbele tabbladnamen na normalisatie')
+        canonical={n.casefold():n for n in ('Q2&3','S1','S2','S3','L','T','C',"KPI's")}
+        for sheet in book:
+            sheet.title=canonical.get(sheet.title.strip().casefold(),sheet.title)
     starts={'Q2&3':2,'S1':7,'S2':8,'S3':12}
     result={}
     for name,start in starts.items():

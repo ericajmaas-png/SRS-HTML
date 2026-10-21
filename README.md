@@ -116,3 +116,6 @@ Het dashboard opent op **Start**. De landing page biedt toegang tot het manageme
 De startpagina verbergt de dashboardfilters. Op mobiel is het menu inklapbaar. Via **Bijgewerkte Excel laden** kan hetzelfde offline importproces worden geopend. Er zijn geen extra bestanden of externe services nodig. `test_landing.cjs` controleert navigatie, leverancierszoekfunctie, import, mobiele menutoestand en herladen; uitkomst in `landing_test_report.txt`.
 
 De ontwerprichting is gebaseerd op **Editorial greeting** uit [taste-skill](https://github.com/Leonxlnx/taste-skill/blob/main/skills/taste-skill/SKILL.md), toegepast binnen de bestaande Alliander-huisstijl. De plug-in is niet geïnstalleerd: de cloudmap `/run/codex-environment/codex-home` is alleen-lezen. De skillbron is gelezen vanuit een tijdelijke clone; het dashboard heeft geen runtime-afhankelijkheid van de plug-in. Zie `LANDING_DESIGN.md` voor controle en afwijkingen.
+
+### Robuuste tabbladnamen
+De Python-verwerking en lokale Excel-upload herkennen Q2&3, S1–S3, L, T, C en KPI's ongeacht hoofdletters en omringende spaties. Zo wordt `L ` ook als Logistiek ingelezen. Dubbele namen na normalisatie worden afgewezen. Ontbrekende brongegevens blijven ontbrekend; normalisatie creëert geen scores voor Q-01, Q-04 en L-01 t/m L-03.
