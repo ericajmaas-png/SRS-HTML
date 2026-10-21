@@ -1,0 +1,25 @@
+{
+  "tool": "taste-skill inspect --app",
+  "source_commit": "6010f91a9935f1c167dfc500fb1a475681892e6b",
+  "widths": [
+    1440,
+    768,
+    390
+  ],
+  "failures": 0,
+  "warnings": [
+    {
+      "id": "colour-sprawl",
+      "message": "15% of the first screen is strongly coloured."
+    },
+    {
+      "id": "tiny-text",
+      "message": "98% of the text is under 13px."
+    },
+    {
+      "id": "panel-void",
+      "message": "1 card(s) hold a blank band inside: 72px in \"Inzicht voor het leveranciersgesprek.\"."
+    }
+  ],
+  "external_dependencies": false
+}

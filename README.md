@@ -2,7 +2,7 @@
 
 Open **Alliander_SRS_Dashboard.html** in Edge of Chrome. Het bestand bevat alle CSS, JavaScript, grafiekcode, Excel-parser en brondata. Internet, backend en installatie zijn voor gebruik niet nodig.
 
-Het dashboard heeft negen tabs: Managementoverzicht, Kwaliteit, Logistiek, Techniek, Commercieel, Duurzaamheid, Leveranciersprofiel, Leveranciersvergelijking en Datakwaliteit. Het overzicht toont alle 29 genummerde KPI-definities uit **KPI’s**. De eerder verwijderde KPI-kaarten blijven verwijderd.
+Het dashboard heeft tien tabs: Start, Managementoverzicht, Kwaliteit, Logistiek, Techniek, Commercieel, Duurzaamheid, Leveranciersprofiel, Leveranciersvergelijking en Datakwaliteit. Het overzicht toont alle 29 genummerde KPI-definities uit **KPI’s**. De eerder verwijderde KPI-kaarten blijven verwijderd.
 
 ## Actuele bron en volledigheid
 
@@ -108,3 +108,11 @@ Bovenaan staat hoeveel KPI’s in de actuele filterselectie berekenbaar zijn (24
 **Details** opent de betreffende categorie; **Leveranciers vergelijken** opent het leveranciersprofiel. **Bronrecords** en antwoordsegmenten tonen de records achter precies die KPI. De bestaande leverancier-, contract- en periodefilters blijven van toepassing. `test_management.cjs` controleert waarden, aantallen, verdelingen, filters, doorklikken en mobiele breedte; resultaat in `management_test_report.txt`.
 
 Binnen elk managementonderwerp staan berekenbare KPI’s eerst. De uitkomsten zijn zo nodig binnen het onderwerp scrollbaar, zodat het overzicht compact blijft; ontbrekende KPI’s blijven bereikbaar en worden ook bij de aandachtspunten opgesomd.
+
+## Startpagina
+
+Het dashboard opent op **Start**. De landing page biedt toegang tot het managementoverzicht, de vijf KPI-onderwerpen, leveranciersvergelijking en datakwaliteit. Zoek direct een leverancier om het profiel te openen; een bevestigde naamvariant wordt herkend. Een leverancier kiezen past bewust de globale leverancierselectie aan. Overige filters blijven behouden. Andere navigatie vanaf Start behoudt de bestaande filters.
+
+De startpagina verbergt de dashboardfilters. Op mobiel is het menu inklapbaar. Via **Bijgewerkte Excel laden** kan hetzelfde offline importproces worden geopend. Er zijn geen extra bestanden of externe services nodig. `test_landing.cjs` controleert navigatie, leverancierszoekfunctie, import, mobiele menutoestand en herladen; uitkomst in `landing_test_report.txt`.
+
+De ontwerprichting is gebaseerd op **Editorial greeting** uit [taste-skill](https://github.com/Leonxlnx/taste-skill/blob/main/skills/taste-skill/SKILL.md), toegepast binnen de bestaande Alliander-huisstijl. De plug-in is niet geïnstalleerd: de cloudmap `/run/codex-environment/codex-home` is alleen-lezen. De skillbron is gelezen vanuit een tijdelijke clone; het dashboard heeft geen runtime-afhankelijkheid van de plug-in. Zie `LANDING_DESIGN.md` voor controle en afwijkingen.

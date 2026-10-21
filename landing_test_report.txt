@@ -1,0 +1,1 @@
+PASS: default start page; 10 navigation destinations; five topic routes; management CTA; supplier lookup with alias handling and invalid-input state; existing filters available in dashboard; Excel upload from start; desktop/tablet/mobile width; folded mobile menu; reload opens start; no external requests or JS errors.
