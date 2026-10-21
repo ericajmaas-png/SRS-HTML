@@ -31,3 +31,7 @@ Bron: de door de gebruiker aangeleverde **Productvisie Supplier Rating System.pd
 ## Validatie
 
 `test_product_vision.cjs` controleert de drie pagina’s, ontbrekende scores, de onafhankelijke herberekening van een gewogen gemiddelde en benchmark, onvoldoende dekking, categorieafbakening, periodebehoud, clusterfilter, bronantwoorden, actieopvolging, browseropslag, mobiele breedte en offline gedrag. Categorieën en gewichten die de test invoert zijn uitsluitend testinstellingen in een tijdelijk browserprofiel, nooit ingebedde productdata. De bestaande QLTCS-, import-, koppel- en filtertests blijven van toepassing op de verdieping.
+
+## Vereenvoudiging na gebruikersfeedback
+
+De operationele startweergave is verbreed naar alle beschikbare afzonderlijke QLTCS-bronmetingen: eerste-fase-scope of ontbrekende samengestelde scores blokkeren geen bestaande data meer. Dit is presentatie van aanvullende bronmetingen, geen uitbreiding van de vastgestelde kwalitatieve totaalscore. Beschikbare KPI’s staan vooraan, ontbrekende samen in een accordion. Geen lege themakaarten of grote ontbrekende-totaalscorekaart. Scoreopbouw en vergelijking gebruiken eveneens beschikbare bronmetingen; zonder categorie wordt de geselecteerde leverancier alvast getoond. Definities, bronnen en eenheden blijven gescheiden. De zijbalk heeft drie hoofdroutes met ingeklapte bronanalyses en beheer. Eén filterbalk vervangt de dubbele leveranciersselectie. Kwartaalontwikkeling, verbeteracties en uitleg verschijnen op verzoek. De test voor het nieuwe gebruikerspad is `test_simple_overview.cjs`.
