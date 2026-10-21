@@ -1,0 +1,1 @@
+PASS: three product vision pages; no invented total; configured weighted mean independently checked; equal-supplier category benchmark; incomplete totals withheld; period/half-year context retained; cluster and source drilldown; category comparison; actions and settings persist; reset; responsive layout; no external network or JavaScript errors.

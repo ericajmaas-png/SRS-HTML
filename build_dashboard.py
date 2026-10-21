@@ -60,6 +60,6 @@ if __name__=='__main__':
     data=extract(a.excel) if a.excel else None
     parser=(ROOT/'vendor/xlsx.full.min.js').read_text()
     template=(ROOT/'dashboard.template.html').read_text()
-    out=template.replace('/* EXCEL_PARSER */',parser).replace('/* EMBEDDED_DATA */',json.dumps(data,ensure_ascii=False).replace('</','<\\/'))
+    out=template.replace('/* PRODUCT_VISION */',(ROOT/'product_vision.js').read_text()).replace('/* EXCEL_PARSER */',parser).replace('/* EMBEDDED_DATA */',json.dumps(data,ensure_ascii=False).replace('</','<\\/'))
     (ROOT/'Alliander_SRS_Dashboard.html').write_text(out)
     print('HTML geschreven; brondata '+('ingebed' if data else 'ontbreekt'))
