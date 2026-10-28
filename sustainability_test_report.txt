@@ -1,0 +1,2 @@
+PASS: only S1/S2/S3 embedded; independent source reference values; unique and conflicting suppliers; legitimate zero vs missing; weighted circularity with negative and zero weights; maturity text plus numeric details; supplier/month/contract filters with correct scope; chart and source drilldown; search/sort/CSV; full and S-only normalized Excel upload; invalid import preserves data; responsive desktop/tablet/mobile; no JS errors or external requests.
+{"s1":5.0486787204450625,"s2":10.003548761074848,"co":2876,"hr":7,"rows":{"S1":4597,"S2":92,"S3":7},"keys":["S1","S2","S3"]}
