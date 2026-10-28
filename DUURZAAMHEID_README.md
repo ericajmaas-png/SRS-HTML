@@ -8,7 +8,7 @@ Het overzicht bevat drie onderdelen, met cijfers en klikbare leveranciersgrafiek
 - **S-02 Circulariteit:** gewogen circulair aandeel, met materiaalgewichten en correcties.
 - **S-03 Mensenrechten:** volwassenheidsband, aanvullende score, vijf componenten en verbeteracties uit de bron.
 
-Er zijn drie eenvoudige tabs: Overzicht, Brongegevens en Datakwaliteit. Er is geen informatie uit de kwaliteit-, logistiek-, techniek- of commerciële werkbladen opgenomen. Er is geen samengestelde duurzaamheidsscore en er zijn geen fictieve doelen of normen.
+Er zijn vier eenvoudige tabs: Overzicht, Vergelijking, Brongegevens en Datakwaliteit. Er is geen informatie uit de kwaliteit-, logistiek-, techniek- of commerciële werkbladen opgenomen. Er is geen samengestelde duurzaamheidsscore en er zijn geen fictieve doelen of normen.
 
 ## Bron en mapping
 
@@ -54,3 +54,11 @@ NODE_PATH=/workspace/scratch/srs-tools/node_modules node test_sustainability.cjs
 `test_sustainability.cjs` controleert de uitkomsten tegen de onafhankelijke Python-referentie: S1 **5,0486787204450625** punten over **2.876** unieke leveranciers; S2 **10,003548761074848%**; S3 **7** leveranciers. De test controleert ook nul versus ontbrekend, dubbele en conflicterende scores, gewogen percentages met negatieve en nulgewichten, filterscope, bronrecords, CSV, complete en S-only Excel-upload, ongeldige import, mobiele/tabletweergave en afwezigheid van netwerkverzoeken en JavaScript-fouten. Zie `sustainability_test_report.txt`.
 
 De browsertest gebruikt Chromium. Het bestand gebruikt standaard HTML/JavaScript voor actuele Chrome en Edge; er is geen afzonderlijke Microsoft Edge-uitvoering gedaan. De lokaal ingebedde parser is SheetJS CE 0.18.5, Apache 2.0; licentie: `vendor/XLSX-LICENSE`.
+
+## Leveranciersvergelijking
+
+De tab **Vergelijking** zet per unieke leverancier de CO₂-punten, gewogen circulariteit, tekstuele volwassenheidsband en aanvullende mensenrechtenscore naast elkaar. Zoek in leverancier of band, sorteer via kolomkoppen, selecteer meerdere leveranciers met het bestaande leverancierfilter en exporteer alle gefilterde zoekresultaten naar CSV. Er zijn maximaal 50 rijen per pagina; de export bevat alle resultaten. Klik op een waarde voor de onderliggende bronrecords, inclusief eventuele conflicten.
+
+S2 wordt per leverancier opnieuw gewogen op de actieve maand-/contractselectie; S1/S3 blijven alleen het leverancierfilter volgen. Ontbrekende scores, conflicten en nulgewichten worden expliciet toegelicht. Een geldige nul blijft zichtbaar als nul. De badge Beschikbare KPI’s telt de beschikbare uitkomsten voor S1, S2 en de leidende S3-band; het is geen samengestelde beoordeling. De aanvullende S3-score telt niet als een vierde KPI. Tekstuele banden worden alfabetisch gesorteerd, zonder numerieke rangorde. Leveranciers met gedeeltelijke of geheel ontbrekende KPI-data blijven zichtbaar als hun naam in een bron staat.
+
+`test_sustainability_comparison.cjs` controleert unieke rijen, zoeken/sorteren/pagineren, multiselect, CSV-inhoud, gewogen percentages met negatieve correcties, nul en ontbrekende waarden, conflicterende duplicaten, S3-band en aanvullende score, filterscope, bronrecords, reset/importherberekening, mobiele breedte en offline werking. De fictieve leveranciers in deze test bestaan uitsluitend in het tijdelijke browsergeheugen; ze worden niet in het dashboard ingebed. Resultaat: `sustainability_comparison_test_report.txt`.
