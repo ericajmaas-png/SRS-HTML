@@ -1,0 +1,132 @@
+{
+  "asOf": "2026-11-02",
+  "rawPurchaseRows": 546,
+  "rawPassportRows": 385,
+  "all": {
+    "rows": 546,
+    "units": 252,
+    "present": 179,
+    "missing": 73,
+    "unknown": 0,
+    "unmatchedPresent": 16,
+    "current": 0,
+    "freshPct": 0.0,
+    "missingPct": 28.96825396825397,
+    "presencePct": 71.03174603174604,
+    "c": 744773.08547,
+    "w": 7446224.0198339,
+    "circular": 10.002023622794704,
+    "validWeights": 378,
+    "unidentified": 12,
+    "states": {
+      "Ouder dan 12 maanden": 129,
+      "Datum onbekend": 50
+    }
+  },
+  "entered": {
+    "rows": 546,
+    "units": 252,
+    "present": 179,
+    "missing": 73,
+    "unknown": 0,
+    "unmatchedPresent": 16,
+    "current": 3,
+    "freshPct": 1.675977653631285,
+    "missingPct": 28.96825396825397,
+    "presencePct": 71.03174603174604,
+    "c": 744773.08547,
+    "w": 7446224.0198339,
+    "circular": 10.002023622794704,
+    "validWeights": 378,
+    "unidentified": 12,
+    "states": {
+      "Ouder dan 12 maanden": 151,
+      "Actueel": 3,
+      "Onzekere datum": 15,
+      "Datum onbekend": 10
+    }
+  },
+  "Q1": {
+    "rows": 358,
+    "units": 215,
+    "present": 160,
+    "missing": 55,
+    "unknown": 0,
+    "unmatchedPresent": 15,
+    "current": 0,
+    "freshPct": 0.0,
+    "missingPct": 25.58139534883721,
+    "presencePct": 74.4186046511628,
+    "c": 531818.40117,
+    "w": 5495523.0269319,
+    "circular": 9.677302752872084,
+    "validWeights": 256,
+    "unidentified": 6,
+    "states": {
+      "Ouder dan 12 maanden": 116,
+      "Datum onbekend": 44
+    }
+  },
+  "Q2": {
+    "rows": 188,
+    "units": 152,
+    "present": 117,
+    "missing": 35,
+    "unknown": 0,
+    "unmatchedPresent": 11,
+    "current": 0,
+    "freshPct": 0.0,
+    "missingPct": 23.026315789473685,
+    "presencePct": 76.97368421052632,
+    "c": 212954.6843,
+    "w": 1950700.992902,
+    "circular": 10.91682862083305,
+    "validWeights": 122,
+    "unidentified": 6,
+    "states": {
+      "Ouder dan 12 maanden": 89,
+      "Datum onbekend": 28
+    }
+  },
+  "contract": {
+    "rows": 25,
+    "units": 10,
+    "present": 10,
+    "missing": 0,
+    "unknown": 0,
+    "unmatchedPresent": 0,
+    "current": 0,
+    "freshPct": 0.0,
+    "missingPct": 0.0,
+    "presencePct": 100.0,
+    "c": 304371.46049,
+    "w": 2806289.0701,
+    "circular": 10.846048033075721,
+    "validWeights": 25,
+    "unidentified": 0,
+    "states": {
+      "Ouder dan 12 maanden": 10
+    }
+  },
+  "category": {
+    "rows": 179,
+    "units": 68,
+    "present": 63,
+    "missing": 5,
+    "unknown": 0,
+    "unmatchedPresent": 15,
+    "current": 0,
+    "freshPct": 0.0,
+    "missingPct": 7.352941176470588,
+    "presencePct": 92.6470588235294,
+    "c": 641019.03177,
+    "w": 6502121.0225809,
+    "circular": 9.858614282075589,
+    "validWeights": 133,
+    "unidentified": 8,
+    "states": {
+      "Ouder dan 12 maanden": 44,
+      "Datum onbekend": 19
+    }
+  }
+}
