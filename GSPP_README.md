@@ -87,3 +87,9 @@ NODE_PATH=/workspace/scratch/srs-tools/node_modules node test_gspp.cjs
 `test_gspp.cjs` controleert die waarden in de browser, alle filters, groepen, ontbrekendelijst, zoeken/sorteren/pagineren/CSV, bronrecords, kwartaalintervallen, exacte datumboundary en schrikkeldag, toekomst/onbekende datum, identiteit met voorloopnullen, versies, conflicten, retouren, nulnoemers, lokale Excel-upload, behoud bij foutieve import, desktop/tablet/mobiel, Amsterdam-datum en offline gedrag. Fictieve randgevallen bestaan uitsluitend in een tijdelijk browserprofiel, niet in de ingebedde dataset. Zie `gspp_test_report.txt`.
 
 De browsercontrole gebruikt Chromium; een afzonderlijke Edge-uitvoering is niet gedaan. De embedded parser is SheetJS CE 0.18.5, Apache 2.0; licentie in `vendor/XLSX-LICENSE`. Alleen het HTML-bestand is voor eindgebruik nodig.
+
+## Kleur van paspoortpercentages
+
+Het percentage **ontbrekende** paspoorten loopt continu van groen bij 0%, via amber in het midden, naar rood bij 100%. Bij **actualiteit** geldt de omgekeerde richting: 0% actueel is rood en 100% actueel is groen. Dit geldt voor de KPI-cijfers en dezelfde percentages in Uitsplitsing. Korte richtingsteksten en een legenda maken de betekenis ook zonder kleur duidelijk. Het is een visuele schaal van 0–100%, geen vastgestelde norm of wijziging van de berekening. Niet-berekenbare percentages blijven neutraal grijs; 0% ontbrekend is geen bewijs dat onbekende behoeften aanwezig zijn. De afzonderlijke aantallen aanwezig/ontbrekend/onbekend blijven zichtbaar. De status Ouder dan 12 maanden gebruikt een rode tint.
+
+`test_gspp_colors.cjs` controleert 0%, 50%, 100%, de omgekeerde actualiteitsrichting, niet-berekenbare data, de kleuren na een contractfilter en in Uitsplitsing, tekstlabels en mobiele breedte. Zie `gspp_colors_test_report.txt`.

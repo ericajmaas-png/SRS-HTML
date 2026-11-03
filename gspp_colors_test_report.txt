@@ -1,0 +1,1 @@
+PASS: green 0% missing vs red 0% current; continuous scale endpoints and midpoint; reversed actuality direction; neutral unavailable percentage; scoped group-table colors; textual/accessible direction labels; mobile width; no JavaScript errors.
