@@ -93,3 +93,13 @@ De browsercontrole gebruikt Chromium; een afzonderlijke Edge-uitvoering is niet 
 Het percentage **ontbrekende** paspoorten loopt continu van groen bij 0%, via amber in het midden, naar rood bij 100%. Bij **actualiteit** geldt de omgekeerde richting: 0% actueel is rood en 100% actueel is groen. Dit geldt voor de KPI-cijfers en dezelfde percentages in Uitsplitsing. Korte richtingsteksten en een legenda maken de betekenis ook zonder kleur duidelijk. Het is een visuele schaal van 0–100%, geen vastgestelde norm of wijziging van de berekening. Niet-berekenbare percentages blijven neutraal grijs; 0% ontbrekend is geen bewijs dat onbekende behoeften aanwezig zijn. De afzonderlijke aantallen aanwezig/ontbrekend/onbekend blijven zichtbaar. De status Ouder dan 12 maanden gebruikt een rode tint.
 
 `test_gspp_colors.cjs` controleert 0%, 50%, 100%, de omgekeerde actualiteitsrichting, niet-berekenbare data, de kleuren na een contractfilter en in Uitsplitsing, tekstlabels en mobiele breedte. Zie `gspp_colors_test_report.txt`.
+
+## Aanwezigheid per leverancier
+
+Op Overzicht staat een afzonderlijk aanwezigheidsoverzicht per leverancier, onafhankelijk van de gekozen uitsplitsing van de circulariteitsgrafiek. Het toont het aandeel aanwezige benodigde GSPP’s en de aantallen aanwezig, ontbrekend, onbekend en totaal benodigd. Groen = aanwezig, rood = ontbrekend, grijs = onbekend. Het aanwezigheidspercentage wordt groener bij een hoger aandeel. Aanwezig betekent niet automatisch dat het paspoort nog actueel is.
+
+De telling gebruikt dezelfde unieke artikel–leverancier–versiecombinaties als de overige KPI’s en volgt alle actieve filters. Regels zonder unieke artikelidentiteit worden per leverancier vermeld, maar niet als paspoort meegeteld. Bij nul identificeerbare behoeften is het percentage niet berekenbaar, geen 100%. De leveranciergroepen zijn op leveranciernummer gebaseerd, niet op de naam.
+
+Standaard zijn de eerste acht leveranciers met de laagste aanwezigheid zichtbaar. Via Alle leveranciers tonen is de hele lijst bereikbaar. Zoeken op naam/nummer, sorteren en CSV-export volgen dezelfde selectie; de export bevat alle gevonden leveranciers, niet alleen de acht zichtbare. Via een aantal worden de betreffende paspoorten getoond met het leverancierfilter ingesteld; kwartaal, contract en categorie blijven behouden.
+
+`test_gspp_presence.cjs` controleert de aansluiting van leverancierstotalen op de algemene KPI’s, ontdubbeling, ontbreken/onbekend/niet-identificeerbaar, percentages en kleuren, filters, doorklikken, zoeken/sorteren, volledige export, reset/import en mobiele breedte. Zie `gspp_presence_test_report.txt`.

@@ -1,0 +1,1 @@
+PASS: supplier-level presence on overview; counts reconcile with overall KPIs; percentage and present/missing/unknown split; no duplicate counting; no false 100% when identity is missing; contract/quarter/supplier scope and drilldown; search/sort/show all; filtered CSV; reset and import recomputation; mobile width; offline and no JS errors.
